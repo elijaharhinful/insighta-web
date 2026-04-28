@@ -66,7 +66,7 @@ export function Header() {
 
         <div className="flex items-center gap-2">
           <Button variant="ghost" size="sm" asChild className="gap-2">
-            <Link href="/account">
+            <Link href="/account" className="flex items-center gap-2">
               <User className="h-4 w-4" />
               <span className="hidden sm:inline">Account</span>
             </Link>

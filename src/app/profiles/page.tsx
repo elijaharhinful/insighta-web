@@ -23,6 +23,7 @@ import {
 export default function ProfilesPage() {
   const [profiles, setProfiles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [exportLoading, setExportLoading] = useState(false);
 
   // Pagination
   const [page, setPage] = useState(1);
@@ -58,6 +59,7 @@ export default function ProfilesPage() {
   };
 
   const handleExport = () => {
+    setExportLoading(true);
     const params = new URLSearchParams();
     params.append("format", "csv");
     if (gender) params.append("gender", gender);
@@ -80,7 +82,8 @@ export default function ProfilesPage() {
         link.click();
         link.remove();
       })
-      .catch(console.error);
+      .catch(console.error)
+      .finally(() => setExportLoading(false));
   };
 
   return (
@@ -95,15 +98,21 @@ export default function ProfilesPage() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" onClick={handleExport} className="gap-2">
-            <Download className="h-4 w-4" />
-            <span className="hidden sm:inline">Export CSV</span>
+          <Button variant="outline" onClick={handleExport} className="gap-2" disabled={exportLoading}>
+            {exportLoading ? (
+              <div className="h-4 w-4 animate-spin rounded-full border-2 border-zinc-500 border-t-transparent dark:border-zinc-400 dark:border-t-transparent" />
+            ) : (
+              <Download className="h-4 w-4" />
+            )}
+            <span className="hidden sm:inline">
+              {exportLoading ? "Exporting..." : "Export CSV"}
+            </span>
           </Button>
           <Button
             asChild
             className="gap-2 bg-indigo-600 hover:bg-indigo-700 text-white dark:bg-indigo-600 dark:text-white dark:hover:bg-indigo-700"
           >
-            <Link href="/search">
+            <Link href="/search" className="flex items-center gap-2">
               <Search className="h-4 w-4" />
               <span className="hidden sm:inline">Smart Search</span>
             </Link>
@@ -124,7 +133,7 @@ export default function ProfilesPage() {
               setGender(e.target.value);
               setPage(1);
             }}
-            className="h-10 rounded-md border border-zinc-200 bg-transparent px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-zinc-800"
+            className="h-10 rounded-md border border-zinc-200 bg-white dark:bg-zinc-950 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-zinc-800"
           >
             <option value="">All Genders</option>
             <option value="male">Male</option>
@@ -137,7 +146,7 @@ export default function ProfilesPage() {
               setAgeGroup(e.target.value);
               setPage(1);
             }}
-            className="h-10 rounded-md border border-zinc-200 bg-transparent px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-zinc-800"
+            className="h-10 rounded-md border border-zinc-200 bg-white dark:bg-zinc-950 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-zinc-800"
           >
             <option value="">All Ages</option>
             <option value="child">Child</option>
