@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Insighta Labs+: Web Portal
 
-## Getting Started
+The **Insighta Labs+ Web Portal** provides a user-friendly interface for the Profile Intelligence System. Designed for analysts and stakeholders, it offers intuitive access to profile data, advanced search, and account management.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+-   **Dashboard**: Quick overview of system metrics and recent activity.
+-   **Profile Explorer**: Interactive list with advanced filtering and pagination.
+-   **Natural Language Search**: Dedicated search interface for plain English queries.
+-   **Detailed Views**: Deep dive into individual profile data and demographics.
+-   **Secure Authentication**: Seamless GitHub OAuth integration.
+-   **Role-Based UI**: Interface elements adapt based on user roles (Admin vs Analyst).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Pages Overview
 
-## Learn More
+| Page | Description |
+|---|---|
+| **Login** | Entry point for GitHub OAuth authentication. |
+| **Dashboard** | Displays key metrics like total profiles and system status. |
+| **Profiles** | The main data grid for viewing and filtering profiles. |
+| **Search** | A focused interface for Natural Language processing. |
+| **Account** | Manage user profile and view role permissions. |
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Tech Stack
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+-   **Framework**: Next.js (App Router)
+-   **Styling**: Vanilla CSS / Tailwind (as per project preference)
+-   **State Management**: React Hooks & Context API
+-   **Authentication**: Secure Cookies (HTTP-only)
+-   **Icons**: Lucide React
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Local Setup
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Prerequisites
+-   Node.js >= 18
+-   Running instance of **Insighta Labs+ API**
+
+### Steps
+1.  **Clone & Install**:
+    ```bash
+    cd insighta-web
+    npm install
+    ```
+2.  **Environment**:
+    ```bash
+    cp .env.example .env.local
+    # Set NEXT_PUBLIC_API_URL to your backend URL
+    ```
+3.  **Run Development Server**:
+    ```bash
+    npm run dev
+    ```
+4.  **Open Browser**:
+    Navigate to [http://localhost:3000](http://localhost:3000).
+
+---
+
+## Authentication & Security
+
+The web portal prioritizes security through several layers:
+
+-   **HTTP-Only Cookies**: JWT tokens are stored in secure cookies, making them inaccessible to client-side scripts (mitigating XSS).
+-   **CSRF Protection**: Every state-changing request includes a CSRF token validated by the backend.
+-   **Protected Routes**: Client-side middleware ensures only authenticated users can access internal pages.
+-   **Automatic Refresh**: The application handles token refreshing in the background to ensure a seamless session.
+
+---
