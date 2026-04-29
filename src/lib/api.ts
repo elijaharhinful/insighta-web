@@ -11,13 +11,27 @@ export const api = axios.create({
   },
 });
 
-api.interceptors.request.use((config) => {
+let cachedCsrfToken: string | null = null;
+
+api.interceptors.request.use(async (config) => {
   const mutating = ["post", "put", "patch", "delete"].includes(
     config.method?.toLowerCase() || "",
   );
 
   if (mutating) {
-    const token = Cookies.get("csrf_token");
+    if (!cachedCsrfToken && typeof window !== "undefined") {
+      try {
+        const res = await axios.get(`${BASE_URL}/auth/csrf-token`, { 
+          withCredentials: true 
+        });
+        cachedCsrfToken = res.data.csrf_token;
+      } catch (err) {
+        console.error("Failed to fetch CSRF token", err);
+      }
+    }
+    
+    // Fallback to cookie if somehow present or cached token
+    const token = cachedCsrfToken || Cookies.get("csrf_token");
     if (token) {
       config.headers["x-csrf-token"] = token;
     }
