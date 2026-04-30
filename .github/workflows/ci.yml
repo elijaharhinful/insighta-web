@@ -25,3 +25,5 @@ jobs:
 
       - name: TypeScript build check
         run: npm run build
+        env:
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
